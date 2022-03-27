@@ -3,9 +3,9 @@ CREATE TABLE IF NOT EXISTS transaction (
   Invoice VARCHAR(55) NOT NULL,
   StockCode VARCHAR(55) NOT NULL,
   Description VARCHAR(255) NOT NULL,
-  Quantity DECIMAL NOT NULL,
+  Quantity DECIMAL(9,3) NOT NULL,
   InvoiceDate DATETIME NOT NULL,
-  Price DECIMAL NOT NULL,
-  CustomerID DECIMAL,
+  Price DECIMAL(10,2) NOT NULL,
+  CustomerID DECIMAL(9,1),
   Country VARCHAR(255) NOT NULL
 );
