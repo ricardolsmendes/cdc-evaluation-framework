@@ -36,6 +36,7 @@ class CSVFilesReader:
         logging.info('Reading the transactions file...')
 
         df = pd.read_csv(file)
+        df.rename(columns={'Customer ID': 'CustomerID'}, inplace=True)
 
         logging.info('DONE!')
 
@@ -90,7 +91,7 @@ class DBTableWriter:
             affected_lines = invoice_items.to_sql(name='transaction',
                                                   con=con,
                                                   if_exists='append',
-                                                  index='False')
+                                                  index_label='ID')
             logging.info('  > %d lines affected', affected_lines)
 
             time.sleep(write_delay)
