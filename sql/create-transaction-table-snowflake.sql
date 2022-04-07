@@ -1,11 +1,11 @@
-CREATE OR REPLACE TABLE transaction (
-  ID NUMBER,
-  Invoice VARCHAR(55),
-  StockCode VARCHAR(55),
-  Description VARCHAR(255),
-  Quantity NUMBER(9,3),
-  InvoiceDate TIMESTAMP_NTZ(9),
-  Price NUMBER(10,2),
-  CustomerID NUMBER(9,1),
-  Country VARCHAR(255)
+CREATE OR REPLACE TABLE "transactions" (
+  "transaction_id" NUMBER,
+  "invoice" VARCHAR(55),
+  "stock_code" VARCHAR(55),
+  "description" VARCHAR(255),
+  "quantity" NUMBER(9,3),
+  "invoice_date" TIMESTAMP_NTZ(9),
+  "price" NUMBER(10,2),
+  "customer_id" NUMBER(9,1),
+  "country" VARCHAR(255)
 );

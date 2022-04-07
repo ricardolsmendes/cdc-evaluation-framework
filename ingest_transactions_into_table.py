@@ -23,6 +23,7 @@ import time
 import pandas as pd
 from pandas import DataFrame
 import sqlalchemy
+from sqlalchemy.engine import Engine
 """
 Input reader
 ========================================
@@ -34,10 +35,7 @@ class CSVFilesReader:
     @classmethod
     def read_transactions(cls, file: str) -> DataFrame:
         logging.info('Reading the transactions file...')
-
         df = pd.read_csv(file)
-        df.rename(columns={'Customer ID': 'CustomerID'}, inplace=True)
-
         logging.info('DONE!')
 
         print()
@@ -78,9 +76,21 @@ class DBTableWriter:
         logging.info('')
         logging.info('Ingesting invoices...')
 
+        tnx_db = transactions.rename(
+            columns={
+                'Invoice': 'invoice',
+                'StockCode': 'stock_code',
+                'Description': 'description',
+                'Quantity': 'quantity',
+                'InvoiceDate': 'invoice_date',
+                'Price': 'price',
+                'Customer ID': 'customer_id',
+                'Country': 'country'
+            })
+
         for invoice in invoice_numbers:
             logging.info('')
-            invoice_items = transactions[transactions['Invoice'] == invoice]
+            invoice_items = tnx_db[tnx_db['invoice'] == invoice]
             logging.info('  Ingesting invoice "%s" with %d items...', invoice,
                          len(invoice_items))
 
@@ -88,10 +98,10 @@ class DBTableWriter:
             print(invoice_items.head())
             print()
 
-            affected_lines = invoice_items.to_sql(name='transaction',
+            affected_lines = invoice_items.to_sql(name='transactions',
                                                   con=con,
                                                   if_exists='append',
-                                                  index_label='ID')
+                                                  index=False)
             logging.info('  > %d lines affected', affected_lines)
 
             time.sleep(write_delay)
@@ -101,7 +111,7 @@ class DBTableWriter:
 
         return
 
-    def create_db_connection(self):
+    def create_db_connection(self) -> Engine:
         return sqlalchemy.create_engine(self.__db_conn_string)
 
 
