@@ -76,7 +76,7 @@ class DBTableWriter:
         logging.info('')
         logging.info('Ingesting invoices...')
 
-        tnx_db = transactions.rename(
+        db_like_df = transactions.rename(
             columns={
                 'Invoice': 'invoice',
                 'StockCode': 'stock_code',
@@ -90,7 +90,7 @@ class DBTableWriter:
 
         for invoice in invoice_numbers:
             logging.info('')
-            invoice_items = tnx_db[tnx_db['invoice'] == invoice]
+            invoice_items = db_like_df[db_like_df['invoice'] == invoice]
             logging.info('  Ingesting invoice "%s" with %d items...', invoice,
                          len(invoice_items))
 
