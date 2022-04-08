@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE transactions (
+CREATE TABLE IF NOT EXISTS transactions (
   transaction_id NUMBER,
   invoice VARCHAR(55),
   stock_code VARCHAR(55),
