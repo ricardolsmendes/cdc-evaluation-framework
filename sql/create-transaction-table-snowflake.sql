@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS transactions (
   description VARCHAR(255),
   quantity NUMBER(9,3),
   invoice_date TIMESTAMP_NTZ(9),
-  price NUMBER(10,2),
+  price NUMBER(9,3),
   customer_id NUMBER(9,1),
   country VARCHAR(255)
 );
