@@ -1,7 +1,6 @@
-# cdc-retail-sample
+# cdc-validation-framework
 
-Sample code to demonstrate Change Data Capture features for the retail
-industry.
+A simple framework to evaluate ordinary Change Data Capture features.
 
-[![license](https://img.shields.io/github/license/ricardolsmendes/cdc-retail-sample.svg)](https://github.com/ricardolsmendes/cdc-retail-sample/blob/main/LICENSE)
-[![issues](https://img.shields.io/github/issues/ricardolsmendes/cdc-retail-sample.svg)](https://github.com/ricardolsmendes/cdc-retail-sample/issues)
+[![license](https://img.shields.io/github/license/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/blob/main/LICENSE)
+[![issues](https://img.shields.io/github/issues/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/issues)
