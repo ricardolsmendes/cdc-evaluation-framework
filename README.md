@@ -1,4 +1,4 @@
-# cdc-validation-framework
+# cdc-evaluation-framework
 
 A simple framework to evaluate ordinary CDC (Change Data Capture) features.
 
