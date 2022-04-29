@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This application demonstrates how to read retail transactions' data from a CSV
-file and ingest them into a database table.
+This application is used to read retail transactions' data from a CSV file and
+ingest them into a database table.
 """
 
 import argparse
@@ -201,6 +201,6 @@ if __name__ == "__main__":
         transactions_df = PandasHelper.select_random_subsets(
             transactions_df, 'Invoice', n_invoices)
 
-    db_table_writer = DBTablesManager(args.db_conn)
-    db_table_writer.insert_invoices(transactions=transactions_df,
-                                    write_delay=float(args.write_delay))
+    db_table_mngr = DBTablesManager(args.db_conn)
+    db_table_mngr.insert_invoices(transactions=transactions_df,
+                                  write_delay=float(args.write_delay))
