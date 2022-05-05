@@ -45,12 +45,12 @@ class CSVFilesReader:
 
 
 """
-Database table manager
+Transactions database manager
 ========================================
 """
 
 
-class DBTablesManager:
+class TransactionsDBManager:
 
     def __init__(self, db_conn_string: str):
         self.__db_conn_string = db_conn_string
@@ -201,6 +201,6 @@ if __name__ == "__main__":
         transactions_df = PandasHelper.select_random_subsets(
             transactions_df, 'Invoice', n_invoices)
 
-    db_table_mngr = DBTablesManager(args.db_conn)
-    db_table_mngr.insert_invoices(transactions=transactions_df,
-                                  write_delay=float(args.write_delay))
+    transactions_db_mgr = TransactionsDBManager(args.db_conn)
+    transactions_db_mgr.insert_invoices(transactions=transactions_df,
+                                        write_delay=float(args.write_delay))
