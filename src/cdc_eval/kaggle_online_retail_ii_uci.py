@@ -200,7 +200,7 @@ class Runner:
         transactions_db_mgr = TransactionsDBManager(db_conn)
 
         # The script operation mode defaults to `insert`.
-        if operation_mode is 'delete':
+        if operation_mode == 'delete':
             transactions_db_mgr.delete_invoices(
                 transactions=transactions_df, operation_delay=operation_delay)
         else:

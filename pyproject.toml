@@ -1,0 +1,44 @@
+[build-system]
+build-backend = "flit_core.buildapi"
+requires = ["flit_core >=3.7.1,<4"]
+
+[project]
+name = "cdc-evaluation-framework"
+version = "0.0.1"
+authors = [
+    {name = "Ricardo Mendes", email = "ricardolsmendes@gmail.com"},
+]
+description = "A provider-agnostic framework to evaluate ordinary CDC (Change Data Capture) features."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+]
+dependencies = [
+    "pandas ~=1.4.1",
+    "pymysql ~=1.0.2",
+    "sqlalchemy ~=1.4.32",
+]
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+documentation = "https://github.com/ricardolsmendes/cdc-evaluation-framework"
+source = "https://github.com/ricardolsmendes/cdc-evaluation-framework"
+
+[tool.flit.module]
+name = "cdc_eval"
+
+[project.optional-dependencies]
+dev = [
+    "flake8 ~=4.0.1",
+    "toml ~=0.10.2",
+    "yapf ~=0.32.0",
+]

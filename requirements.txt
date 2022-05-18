@@ -1,3 +1,0 @@
-pandas~=1.4.1
-pymysql~=1.0.2
-sqlalchemy~=1.4.32
