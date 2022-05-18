@@ -15,7 +15,7 @@
 This application is used to read retail transactions' data from a CSV file and
 insert or delete them into/from a database table.
 
-A working dataset can be downloaded from
+A fully working dataset can be downloaded from
 https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci.
 """
 
@@ -57,8 +57,12 @@ class TransactionsDBManager:
     def __init__(self, db_conn_string: str):
         self.__db_conn_string = db_conn_string
 
+    def delete_invoices(self, transactions: DataFrame,
+                        operation_delay: float) -> None:
+        return
+
     def insert_invoices(self, transactions: DataFrame,
-                        write_delay: float) -> None:
+                        operation_delay: float) -> None:
 
         logging.info('')
         logging.info('Connecting to the database...')
@@ -95,7 +99,7 @@ class TransactionsDBManager:
                                                   index=False)
             logging.info('  > %d lines affected', affected_lines)
 
-            time.sleep(write_delay)
+            time.sleep(operation_delay)
 
         logging.info('DONE!')
         logging.info('==================================================')
@@ -185,7 +189,7 @@ class Runner:
 
     @classmethod
     def run(cls, data_file: str, invoices: int, db_conn: str,
-            write_delay: float) -> None:
+            operation_delay: float, operation_mode: str) -> None:
 
         transactions_df = CSVFilesReader.read_transactions(data_file)
 
@@ -194,5 +198,11 @@ class Runner:
                 transactions_df, 'Invoice', invoices)
 
         transactions_db_mgr = TransactionsDBManager(db_conn)
-        transactions_db_mgr.insert_invoices(transactions=transactions_df,
-                                            write_delay=write_delay)
+
+        # The script operation mode defaults to `insert`.
+        if operation_mode is 'delete':
+            transactions_db_mgr.delete_invoices(
+                transactions=transactions_df, operation_delay=operation_delay)
+        else:
+            transactions_db_mgr.insert_invoices(
+                transactions=transactions_df, operation_delay=operation_delay)

@@ -42,7 +42,7 @@ class CDCEvalCLI:
 
         kaggle_online_retail_uci_parser = subparsers.add_parser(
             'kaggle-online-retail-uci',
-            help='Use the Kaggle Online Retail II UCI dataset')
+            help='Use the "Kaggle Online Retail II UCI" dataset')
         kaggle_online_retail_uci_parser.add_argument('--data-file',
                                                      help='the CSV data file',
                                                      required=True)
@@ -53,22 +53,27 @@ class CDCEvalCLI:
             help='the database connection string for SQLAlchemy',
             required=True)
         kaggle_online_retail_uci_parser.add_argument(
-            '--write-delay',
-            help='seconds to wait between database write operations',
+            '--operation-delay',
+            help='seconds to wait between database operations',
             default=1)
+        kaggle_online_retail_uci_parser.add_argument(
+            '--operation-mode',
+            help='the script operation mode: insert or delete',
+            default='insert')
 
         kaggle_online_retail_uci_parser.set_defaults(
-            func=cls.__use_kaggle_online_retail_ds)
+            func=cls.__use_kaggle_online_retail_uci_ds)
 
         return parser.parse_args(argv)
 
     @classmethod
-    def __use_kaggle_online_retail_ds(cls, args):
-        kaggle_online_retail_ii_uci.Runner().run(data_file=args.data_file,
-                                                 invoices=int(args.invoices),
-                                                 db_conn=args.db_conn,
-                                                 write_delay=float(
-                                                     args.write_delay))
+    def __use_kaggle_online_retail_uci_ds(cls, args):
+        kaggle_online_retail_ii_uci.Runner().run(
+            data_file=args.data_file,
+            invoices=int(args.invoices),
+            db_conn=args.db_conn,
+            operation_delay=float(args.operation_delay),
+            operation_mode=args.operation_mode)
 
 
 """
