@@ -29,16 +29,16 @@ dependencies = [
 [project.license]
 file = "LICENSE"
 
-[project.urls]
-documentation = "https://github.com/ricardolsmendes/cdc-evaluation-framework"
-source = "https://github.com/ricardolsmendes/cdc-evaluation-framework"
-
-[tool.flit.module]
-name = "cdc_eval"
-
 [project.optional-dependencies]
 dev = [
     "flake8 ~=4.0.1",
     "toml ~=0.10.2",
     "yapf ~=0.32.0",
 ]
+
+[project.urls]
+documentation = "https://github.com/ricardolsmendes/cdc-evaluation-framework"
+source = "https://github.com/ricardolsmendes/cdc-evaluation-framework"
+
+[tool.flit.module]
+name = "cdc_eval"
