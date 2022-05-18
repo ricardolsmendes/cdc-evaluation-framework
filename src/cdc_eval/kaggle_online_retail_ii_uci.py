@@ -13,10 +13,12 @@
 # limitations under the License.
 """
 This application is used to read retail transactions' data from a CSV file and
-ingest them into a database table.
+insert or delete them into/from a database table.
+
+A working dataset can be downloaded from
+https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci.
 """
 
-import argparse
 import logging
 import time
 
@@ -174,33 +176,23 @@ class PandasHelper:
 
 
 """
-Main program entry point
+Main module entry point
 ========================================
 """
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
 
-    parser = argparse.ArgumentParser(description='Ingest transactions data')
 
-    parser.add_argument('--data-file', help='the CSV data file', required=True)
-    parser.add_argument('--invoices', help='the number of invoices', default=0)
-    parser.add_argument('--db-conn',
-                        help='the database connection string for SQLAlchemy',
-                        required=True)
-    parser.add_argument(
-        '--write-delay',
-        help='seconds to wait between database write operations',
-        default=1)
+class Runner:
 
-    args = parser.parse_args()
+    @classmethod
+    def run(cls, data_file: str, invoices: int, db_conn: str,
+            write_delay: float) -> None:
 
-    transactions_df = CSVFilesReader.read_transactions(args.data_file)
+        transactions_df = CSVFilesReader.read_transactions(data_file)
 
-    n_invoices = int(args.invoices)
-    if n_invoices > 0:
-        transactions_df = PandasHelper.select_random_subsets(
-            transactions_df, 'Invoice', n_invoices)
+        if invoices > 0:
+            transactions_df = PandasHelper.select_random_subsets(
+                transactions_df, 'Invoice', invoices)
 
-    transactions_db_mgr = TransactionsDBManager(args.db_conn)
-    transactions_db_mgr.insert_invoices(transactions=transactions_df,
-                                        write_delay=float(args.write_delay))
+        transactions_db_mgr = TransactionsDBManager(db_conn)
+        transactions_db_mgr.insert_invoices(transactions=transactions_df,
+                                            write_delay=write_delay)
