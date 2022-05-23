@@ -36,6 +36,9 @@ dev = [
     "yapf ~=0.32.0",
 ]
 
+[project.scripts]
+cdc-eval = "cdc_eval:main"
+
 [project.urls]
 documentation = "https://github.com/ricardolsmendes/cdc-evaluation-framework"
 source = "https://github.com/ricardolsmendes/cdc-evaluation-framework"

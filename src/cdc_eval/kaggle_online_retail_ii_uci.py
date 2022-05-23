@@ -25,6 +25,7 @@ import time
 import pandas as pd
 from pandas import DataFrame
 import sqlalchemy
+from sqlalchemy import Table
 from sqlalchemy.engine import Engine
 """
 Input reader
@@ -59,7 +60,38 @@ class TransactionsDBManager:
 
     def delete_invoices(self, transactions: DataFrame,
                         operation_delay: float) -> None:
-        return
+
+        logging.info('')
+        logging.info('Connecting to the database...')
+        con = self.create_db_connection()
+
+        logging.info('')
+        logging.info('Getting the existing "transactions" table...')
+        transactions_table = self.get_existing_table(con, 'transactions')
+
+        logging.info('')
+        logging.info('Deleting invoices...')
+
+        for invoice in transactions['Invoice'].unique():
+            invoice_items = transactions[transactions['Invoice'] == invoice]
+            logging.info('')
+            logging.info('  Deleting invoice "%s" with %d items...', invoice,
+                         len(invoice_items))
+
+            logging.info('\n%s', invoice_items.head())
+            logging.info('')
+
+            # Use a SQLAlchemy expression to delete records from a SQL database
+            # according to a given criteria -- e.g., invoice == 'invoice#'.
+            stmt = sqlalchemy.delete(transactions_table).where(
+                transactions_table.c.invoice == invoice)
+            affected_lines = con.execute(stmt).rowcount
+            logging.info('  > %s lines affected', affected_lines)
+
+            time.sleep(operation_delay)
+
+        logging.info('DONE!')
+        logging.info('==================================================')
 
     def insert_invoices(self, transactions: DataFrame,
                         operation_delay: float) -> None:
@@ -71,7 +103,7 @@ class TransactionsDBManager:
         logging.info('')
         logging.info('Inserting invoices...')
 
-        db_like_df = transactions.rename(
+        db_columns_df = transactions.rename(
             columns={
                 'Invoice': 'invoice',
                 'StockCode': 'stock_code',
@@ -84,15 +116,16 @@ class TransactionsDBManager:
             })
 
         for invoice in transactions['Invoice'].unique():
+            invoice_items = db_columns_df[db_columns_df['invoice'] == invoice]
             logging.info('')
-            invoice_items = db_like_df[db_like_df['invoice'] == invoice]
             logging.info('  Inserting invoice "%s" with %d items...', invoice,
                          len(invoice_items))
 
-            print()
-            print(invoice_items.head())
-            print()
+            logging.info('\n%s', invoice_items.head())
+            logging.info('')
 
+            # For the sake of simplicity, use pandas.DataFrame.to_sql() to
+            # write records stored in a DataFrame to a SQL database.
             affected_lines = invoice_items.to_sql(name='transactions',
                                                   con=con,
                                                   if_exists='append',
@@ -104,10 +137,14 @@ class TransactionsDBManager:
         logging.info('DONE!')
         logging.info('==================================================')
 
-        return
-
     def create_db_connection(self) -> Engine:
         return sqlalchemy.create_engine(self.__db_conn_string)
+
+    @classmethod
+    def get_existing_table(cls, con: Engine, table_name: str) -> Table:
+        metadata = sqlalchemy.MetaData()
+        metadata.reflect(bind=con)
+        return metadata.tables[table_name]
 
 
 """
@@ -120,15 +157,15 @@ class PandasHelper:
 
     @classmethod
     def print_df_metadata(cls, df: DataFrame) -> None:
-        print()
+        logging.info('')
         logging.info('  > Dataframe shape: %s', df.shape)
         logging.info('  > Dataframe index: %s', df.index)
         logging.info('  > Dataframe columns: %s', df.columns)
 
-        print()
-        print('  > Dataframe head:')
-        print(df.head())
-        print()
+        logging.info('')
+        logging.info('  > Dataframe head:')
+        logging.info('\n%s', df.head())
+        logging.info('')
 
         logging.info('==================================================')
 
