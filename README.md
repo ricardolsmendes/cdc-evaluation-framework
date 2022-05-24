@@ -124,7 +124,7 @@ mv online_retail_II.csv /tmp/
 #### 3.1.2. Set up the source and destination DB/DW
 
 Please refer to the
-[sql/kaggle-online-retail-ii-uci](.sql/kaggle-online-retail-ii-uci)
+[sql/kaggle-online-retail-ii-uci](./sql/kaggle-online-retail-ii-uci)
 folder for help. 
 
 #### 3.1.3. Load all transaction data into a MySQL source table
