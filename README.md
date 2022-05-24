@@ -1,9 +1,9 @@
 # cdc-evaluation-framework
 
-A provider-agnostic framework to evaluate ordinary CDC (Change Data Capture)
+A provider-agnostic framework to evaluate ordinary Change Data Capture (CDC)
 features. It consists of Python code and SQL statements intended to manage
-chunks of data in transactional databases, allowing CDC users to evaluate
-replication KPIs using the tools of their choice. 
+chunks of data in transactional databases, allowing users to evaluate
+replication performance using the tools of their choice.
 
 [![license](https://img.shields.io/github/license/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/blob/main/LICENSE)
 [![issues](https://img.shields.io/github/issues/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/issues)
@@ -12,30 +12,30 @@ replication KPIs using the tools of their choice.
 
 <!-- toc -->
 
-- [1. Evaluation Plan](#1-evaluation-plan)
+- [1. Change Data Capture Evaluation Plan](#1-change-data-capture-evaluation-plan)
 - [2. Environment setup](#2-environment-setup)
-  * [2.1. Python](#21-python)
-    + [2.1.1. Install Python 3.8+](#211-install-python-38)
-    + [2.1.2. Create a folder](#212-create-a-folder)
-    + [2.1.3. Create and activate an isolated virtual environment](#213-create-and-activate-an-isolated-virtual-environment)
-    + [2.1.4. Install the package](#214-install-the-package)
+  - [2.1. Python](#21-python)
+    - [2.1.1. Install Python 3.8+](#211-install-python-38)
+    - [2.1.2. Create a folder](#212-create-a-folder)
+    - [2.1.3. Create and activate an isolated execution environment](#213-create-and-activate-an-isolated-execution-environment)
+    - [2.1.4. Install the package](#214-install-the-package)
 - [3. Using the framework](#3-using-the-framework)
-  * [3.1. Online Retail II UCI dataset (from Kaggle)](#31-online-retail-ii-uci-dataset-from-kaggle)
-    + [3.1.1. Download the dataset](#311-download-the-dataset)
-    + [3.1.2. Load all transaction data into a MySQL source table](#312-load-all-transaction-data-into-a-mysql-source-table)
-    + [3.1.3. Insert random transactions into the source table](#313-insert-random-transactions-into-the-source-table)
-    + [3.1.4. Delete random transactions from the source table](#314-delete-random-transactions-from-the-source-table)
+  - [3.1. Online Retail II UCI dataset (available on Kaggle)](#31-online-retail-ii-uci-dataset-available-on-kaggle)
+    - [3.1.1. Download the dataset](#311-download-the-dataset)
+    - [3.1.2. Load all transaction data into a MySQL source table](#312-load-all-transaction-data-into-a-mysql-source-table)
+    - [3.1.3. Insert random transactions into the source table](#313-insert-random-transactions-into-the-source-table)
+    - [3.1.4. Delete random transactions from the source table](#314-delete-random-transactions-from-the-source-table)
 - [4. How to contribute](#4-how-to-contribute)
-  * [4.1. Report issues](#41-report-issues)
-  * [4.2. Contribute code](#42-contribute-code)
+  - [4.1. Report issues](#41-report-issues)
+  - [4.2. Contribute code](#42-contribute-code)
 
 <!-- tocstop -->
 
 ---
 
-## 1. Evaluation Plan
+## 1. Change Data Capture Evaluation Plan
 
-A typical evaluation plan comprises 5 major steps:
+A typical CDC evaluation plan comprises 5 major steps:
 
 1. Load big chunks of data into the source database before starting any
    replication jobs.
@@ -68,7 +68,7 @@ cd ./cdc-evaluation-framework
 _All paths starting with `./` in the next steps are relative to the
 `cdc-evaluation-framework` folder._
 
-#### 2.1.3. Create and activate an isolated virtual environment
+#### 2.1.3. Create and activate an isolated execution environment
 
 This step is optional, but strongly recommended.
 
@@ -83,7 +83,13 @@ WORK IN PROGRESS!
 
 ## 3. Using the framework
 
-### 3.1. Online Retail II UCI dataset (from Kaggle)
+### 3.1. Online Retail II UCI dataset (available on Kaggle)
+
+About:
+
+| Rows      | Columns | Verified at |
+| --------- | ------: | ----------: |
+| 1,067,371 |       8 |  2022-05-23 |
 
 #### 3.1.1. Download the dataset
 
@@ -98,19 +104,21 @@ mv online_retail_II.csv /tmp/
 
 #### 3.1.2. Load all transaction data into a MySQL source table
 
-Use the below instructions to accomplish the first step of the [Evaluation
-Plan](#1-evaluation-plan).
+Use the below instructions to accomplish the first step of the [CDC Evaluation
+Plan](#1-change-data-capture-evaluation-plan).
 
 1. Set the server's `local_infile` system variable to `1`:
+
    ```sql
    set global local_infile = 1;
    ```
 
 2. Provide the `--local-infile=1` flag when connecting the client:
+
    ```shell
    mysql -u <USER> -p --local-infile=1 <DATABASE>
    ```
-   
+
 3. Run the below command using the client:
    ```sql
    LOAD DATA LOCAL INFILE '/tmp/online_retail_II.csv'
@@ -125,8 +133,8 @@ Plan](#1-evaluation-plan).
 
 #### 3.1.3. Insert random transactions into the source table
 
-You can use the below command to automate the fourth step of the [Evaluation
-Plan](#1-evaluation-plan).
+You can use the below command to automate the fourth step of the [CDC
+Evaluation Plan](#1-change-data-capture-evaluation-plan).
 
 ```shell
 cdc-eval kaggle-online-retail-uci \
@@ -137,8 +145,8 @@ cdc-eval kaggle-online-retail-uci \
 
 #### 3.1.4. Delete random transactions from the source table
 
-You can use the below command to automate the fourth step of the [Evaluation
-Plan](#1-evaluation-plan).
+You can use the below command to automate the fourth step of the [CDC
+Evaluation Plan](#1-change-data-capture-evaluation-plan).
 
 ```shell
 cdc-eval kaggle-online-retail-uci \
