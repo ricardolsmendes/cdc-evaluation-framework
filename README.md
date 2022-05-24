@@ -27,20 +27,21 @@ capabilities using the tools of their choice.
 
 - [1. Change Data Capture Evaluation Plan](#1-change-data-capture-evaluation-plan)
 - [2. Environment setup](#2-environment-setup)
-  - [2.1. Python](#21-python)
-    - [2.1.1. Install Python 3.8+](#211-install-python-38)
-    - [2.1.2. Create a folder](#212-create-a-folder)
-    - [2.1.3. Create and activate an isolated execution environment](#213-create-and-activate-an-isolated-execution-environment)
-    - [2.1.4. Install the package](#214-install-the-package)
-- [3. Using the framework](#3-using-the-framework)
-  - [3.1. Online Retail II UCI dataset (available on Kaggle)](#31-online-retail-ii-uci-dataset-available-on-kaggle)
-    - [3.1.1. Download the dataset](#311-download-the-dataset)
-    - [3.1.2. Load all transaction data into a MySQL source table](#312-load-all-transaction-data-into-a-mysql-source-table)
-    - [3.1.3. Insert random transactions into the source table](#313-insert-random-transactions-into-the-source-table)
-    - [3.1.4. Delete random transactions from the source table](#314-delete-random-transactions-from-the-source-table)
+  * [2.1. Python](#21-python)
+    + [2.1.1. Install Python 3.8+](#211-install-python-38)
+    + [2.1.2. Create a folder](#212-create-a-folder)
+    + [2.1.3. Create and activate an isolated execution environment](#213-create-and-activate-an-isolated-execution-environment)
+    + [2.1.4. Install the package](#214-install-the-package)
+- [3. Usage instructions](#3-usage-instructions)
+  * [3.1. Online Retail II UCI dataset (available on Kaggle)](#31-online-retail-ii-uci-dataset-available-on-kaggle)
+    + [3.1.1. Download the dataset](#311-download-the-dataset)
+    + [3.1.2. Set up the source and destination DB/DW](#312-set-up-the-source-and-destination-dbdw)
+    + [3.1.3. Load all transaction data into a MySQL source table](#313-load-all-transaction-data-into-a-mysql-source-table)
+    + [3.1.4. Insert random transactions into the source table](#314-insert-random-transactions-into-the-source-table)
+    + [3.1.5. Delete random transactions from the source table](#315-delete-random-transactions-from-the-source-table)
 - [4. How to contribute](#4-how-to-contribute)
-  - [4.1. Report issues](#41-report-issues)
-  - [4.2. Contribute code](#42-contribute-code)
+  * [4.1. Report issues](#41-report-issues)
+  * [4.2. Contribute code](#42-contribute-code)
 
 <!-- tocstop -->
 
@@ -94,7 +95,7 @@ source ./env/bin/activate
 
 COMING SOON!
 
-## 3. Using the framework
+## 3. Usage instructions
 
 ### 3.1. Online Retail II UCI dataset (available on Kaggle)
 
@@ -120,7 +121,13 @@ unzip archive.zip
 mv online_retail_II.csv /tmp/
 ```
 
-#### 3.1.2. Load all transaction data into a MySQL source table
+#### 3.1.2. Set up the source and destination DB/DW
+
+Please refer to the
+[sql/kaggle-online-retail-ii-uci](.sql/kaggle-online-retail-ii-uci)
+folder for help. 
+
+#### 3.1.3. Load all transaction data into a MySQL source table
 
 Use the below instructions to accomplish the first step of the [CDC Evaluation
 Plan](#1-change-data-capture-evaluation-plan).
@@ -149,7 +156,7 @@ Plan](#1-change-data-capture-evaluation-plan).
      SET customer_id = NULLIF(@customer_id, '');
    ```
 
-#### 3.1.3. Insert random transactions into the source table
+#### 3.1.4. Insert random transactions into the source table
 
 You can use the below command to automate the fourth step of the [CDC
 Evaluation Plan](#1-change-data-capture-evaluation-plan).
@@ -161,7 +168,7 @@ cdc-eval kaggle-online-retail-uci \
   --db-conn <SQLALCHEMY-CONNECTION-STRING>
 ```
 
-#### 3.1.4. Delete random transactions from the source table
+#### 3.1.5. Delete random transactions from the source table
 
 You can use the below command to automate the fourth step of the [CDC
 Evaluation Plan](#1-change-data-capture-evaluation-plan).
