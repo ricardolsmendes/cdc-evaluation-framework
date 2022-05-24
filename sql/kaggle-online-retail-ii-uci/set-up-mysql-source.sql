@@ -42,13 +42,3 @@ GRANT REPLICATION SLAVE, REPLICATION CLIENT
 GRANT SELECT
   ON cdc_evaluation.transactions
   TO `cdc-replication-agent`@`%`;
-
--- 5. Load data into the source table
-LOAD DATA LOCAL INFILE '/tmp/online_retail_II.csv'
-  INTO TABLE transactions
-  FIELDS TERMINATED BY ','
-  OPTIONALLY ENCLOSED BY '"'
-  IGNORE 1 ROWS
-  (invoice, stock_code, description, quantity, invoice_date, price,
-   @customer_id, country)
-  SET customer_id = NULLIF(@customer_id, '');
