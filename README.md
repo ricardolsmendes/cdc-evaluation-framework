@@ -1,12 +1,25 @@
 # cdc-evaluation-framework
 
 A provider-agnostic framework to evaluate ordinary Change Data Capture (CDC)
-features. It consists of Python code and SQL statements intended to manage
-chunks of data in transactional databases, allowing users to evaluate
-replication performance using the tools of their choice.
+features, comprising:
+
+1. A high-level evaluation plan.
+2. SQL statements to set up source and destination DB/DW environments.
+3. SQL statements to fully ingest CSV files into database tables.
+4. Python scripts to manage chunks of data in transactional databases.
+
+The framework is intended to allow users to evaluate replication/streaming
+capabilities using the tools of their choice.
 
 [![license](https://img.shields.io/github/license/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/blob/main/LICENSE)
 [![issues](https://img.shields.io/github/issues/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/issues)
+
+<!--
+  DO NOT UPDATE THE TABLE OF CONTENTS MANUALLY
+  run `npx markdown-toc -i README.md`.
+
+  Please stick to 80-character line wraps as much as you can.
+-->
 
 ## Table of Contents
 
@@ -35,11 +48,11 @@ replication performance using the tools of their choice.
 
 ## 1. Change Data Capture Evaluation Plan
 
-A typical CDC evaluation plan comprises 5 major steps:
+The high-level CDC evaluation plan comprises 5 major steps:
 
 1. Load big chunks of data into the source database before starting any
-   replication jobs.
-2. Start the replication jobs using the CDC tool of your choice.
+   replication/streaming jobs.
+2. Start the replication/streaming jobs using the CDC tool of your choice.
 3. _[Optional]_ Wait for the CDC tool to stream all existing data (aka take an
    initial snapshot).
 4. Insert/update/delete records into/from the source tables using the Python
@@ -79,17 +92,22 @@ source ./env/bin/activate
 
 #### 2.1.4. Install the package
 
-WORK IN PROGRESS!
+COMING SOON!
 
 ## 3. Using the framework
 
 ### 3.1. Online Retail II UCI dataset (available on Kaggle)
 
-About:
+> The Online Retail II data set contains all the transactions occurring for a
+> UK-based and registered, non-store online retail between 01/12/2009 and
+> 09/12/2011.The company mainly sells unique all-occasion gift-ware. Many
+> customers of the company are wholesalers.
 
-| Rows      | Columns | Verified at |
-| --------- | ------: | ----------: |
-| 1,067,371 |       8 |  2022-05-23 |
+Summary:
+
+| Industry | Rows      | Columns | Verified at |
+| -------- | --------- | ------: | ----------: |
+| Retail   | 1,067,371 |       8 |  2022-05-23 |
 
 #### 3.1.1. Download the dataset
 
