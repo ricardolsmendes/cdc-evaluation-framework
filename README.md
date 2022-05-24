@@ -31,6 +31,8 @@ replication KPIs using the tools of their choice.
 
 <!-- tocstop -->
 
+---
+
 ## 1. Evaluation Plan
 
 A typical evaluation plan comprises 5 major steps:
@@ -123,6 +125,9 @@ Plan](#1-evaluation-plan).
 
 #### 3.1.3. Insert random transactions into the source table
 
+You can use the below command to automate the fourth step of the [Evaluation
+Plan](#1-evaluation-plan).
+
 ```shell
 cdc-eval kaggle-online-retail-uci \
   --data-file datasets/kaggle-online-retail-ii-uci.csv \
@@ -131,6 +136,9 @@ cdc-eval kaggle-online-retail-uci \
 ```
 
 #### 3.1.4. Delete random transactions from the source table
+
+You can use the below command to automate the fourth step of the [Evaluation
+Plan](#1-evaluation-plan).
 
 ```shell
 cdc-eval kaggle-online-retail-uci \
