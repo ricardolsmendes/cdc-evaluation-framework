@@ -31,7 +31,6 @@ file = "LICENSE"
 
 [project.optional-dependencies]
 dev = [
-    "flake8 ~=4.0.1",
     "toml ~=0.10.2",
     "yapf ~=0.32.0",
 ]
@@ -45,3 +44,7 @@ source = "https://github.com/ricardolsmendes/cdc-evaluation-framework"
 
 [tool.flit.module]
 name = "cdc_eval"
+
+[tool.yapf]
+blank_line_before_nested_class_or_def = true
+column_limit = 88

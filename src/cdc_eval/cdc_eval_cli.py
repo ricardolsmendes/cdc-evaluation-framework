@@ -35,8 +35,7 @@ class CDCEvalCLI:
     @classmethod
     def _parse_args(cls, argv):
         parser = argparse.ArgumentParser(
-            description=__doc__,
-            formatter_class=argparse.RawDescriptionHelpFormatter)
+            description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
 
         subparsers = parser.add_subparsers()
 
@@ -46,8 +45,9 @@ class CDCEvalCLI:
         kaggle_online_retail_uci_parser.add_argument('--data-file',
                                                      help='the CSV data file',
                                                      required=True)
-        kaggle_online_retail_uci_parser.add_argument(
-            '--invoices', help='the number of invoices', default=0)
+        kaggle_online_retail_uci_parser.add_argument('--invoices',
+                                                     help='the number of invoices',
+                                                     default=0)
         kaggle_online_retail_uci_parser.add_argument(
             '--db-conn',
             help='the database connection string for SQLAlchemy',
@@ -68,12 +68,12 @@ class CDCEvalCLI:
 
     @classmethod
     def __use_kaggle_online_retail_uci_ds(cls, args):
-        kaggle_online_retail_ii_uci.Runner().run(
-            data_file=args.data_file,
-            invoices=int(args.invoices),
-            db_conn=args.db_conn,
-            operation_delay=float(args.operation_delay),
-            operation_mode=args.operation_mode)
+        kaggle_online_retail_ii_uci.Runner().run(data_file=args.data_file,
+                                                 invoices=int(args.invoices),
+                                                 db_conn=args.db_conn,
+                                                 operation_delay=float(
+                                                     args.operation_delay),
+                                                 operation_mode=args.operation_mode)
 
 
 """

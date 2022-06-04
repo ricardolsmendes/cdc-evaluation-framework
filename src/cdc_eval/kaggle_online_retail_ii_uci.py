@@ -58,8 +58,7 @@ class TransactionsDBManager:
     def __init__(self, db_conn_string: str):
         self.__db_conn_string = db_conn_string
 
-    def delete_invoices(self, transactions: DataFrame,
-                        operation_delay: float) -> None:
+    def delete_invoices(self, transactions: DataFrame, operation_delay: float) -> None:
 
         logging.info('')
         logging.info('Connecting to the database...')
@@ -93,8 +92,7 @@ class TransactionsDBManager:
         logging.info('DONE!')
         logging.info('==================================================')
 
-    def insert_invoices(self, transactions: DataFrame,
-                        operation_delay: float) -> None:
+    def insert_invoices(self, transactions: DataFrame, operation_delay: float) -> None:
 
         logging.info('')
         logging.info('Connecting to the database...')
@@ -170,8 +168,7 @@ class PandasHelper:
         logging.info('==================================================')
 
     @classmethod
-    def select_random_subsets(cls, df: DataFrame, id_column: str,
-                              n: int) -> DataFrame:
+    def select_random_subsets(cls, df: DataFrame, id_column: str, n: int) -> DataFrame:
 
         logging.info('')
         logging.info('Selecting %d random subsets...', n)
@@ -225,8 +222,8 @@ Main module entry point
 class Runner:
 
     @classmethod
-    def run(cls, data_file: str, invoices: int, db_conn: str,
-            operation_delay: float, operation_mode: str) -> None:
+    def run(cls, data_file: str, invoices: int, db_conn: str, operation_delay: float,
+            operation_mode: str) -> None:
 
         transactions_df = CSVFilesReader.read_transactions(data_file)
 
@@ -238,8 +235,8 @@ class Runner:
 
         # The script operation mode defaults to `insert`.
         if operation_mode == 'delete':
-            transactions_db_mgr.delete_invoices(
-                transactions=transactions_df, operation_delay=operation_delay)
+            transactions_db_mgr.delete_invoices(transactions=transactions_df,
+                                                operation_delay=operation_delay)
         else:
-            transactions_db_mgr.insert_invoices(
-                transactions=transactions_df, operation_delay=operation_delay)
+            transactions_db_mgr.insert_invoices(transactions=transactions_df,
+                                                operation_delay=operation_delay)
