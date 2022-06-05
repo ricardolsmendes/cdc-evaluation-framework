@@ -31,6 +31,7 @@ file = "LICENSE"
 
 [project.optional-dependencies]
 dev = [
+    "pylint ~=2.14.0",
     "toml ~=0.10.2",
     "yapf ~=0.32.0",
 ]
@@ -44,6 +45,10 @@ source = "https://github.com/ricardolsmendes/cdc-evaluation-framework"
 
 [tool.flit.module]
 name = "cdc_eval"
+
+[tool.pylint]
+max-line-length = 88
+disable = ["C0103", "C0114", "C0115", "C0116", "R0903", "R0913", "W0105"]
 
 [tool.yapf]
 blank_line_before_nested_class_or_def = true
