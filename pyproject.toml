@@ -32,6 +32,7 @@ file = "LICENSE"
 [project.optional-dependencies]
 dev = [
     "pylint ~=2.14.0",
+    "pytest-cov ~=3.0.0",
     "toml ~=0.10.2",
     "yapf ~=0.32.0",
 ]
@@ -49,6 +50,10 @@ name = "cdc_eval"
 [tool.pylint]
 max-line-length = 88
 disable = ["C0103", "C0114", "C0115", "C0116", "R0903", "R0913", "W0105"]
+
+[tool.pytest.ini_options]
+addopts = "--cov --cov-report html --cov-report term-missing --cov-fail-under 35"
+norecursedirs = ["./env/*", "./venv/*", "./tests/*"]
 
 [tool.yapf]
 blank_line_before_nested_class_or_def = true
