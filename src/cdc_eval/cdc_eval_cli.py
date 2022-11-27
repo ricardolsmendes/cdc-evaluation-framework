@@ -16,7 +16,7 @@ import argparse
 import logging
 import sys
 
-from . import kaggle_online_retail_ii_uci
+from cdc_eval import kaggle_online_retail_ii_uci
 
 
 class CDCEvalCLI:
