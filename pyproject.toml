@@ -68,6 +68,7 @@ disable = [
     "R0903", # Too few public methods (1/2) (too-few-public-methods)
     "R0913", # Too many arguments (6/5) (too-many-arguments)
     "W0105", # String statement has no effect (pointless-string-statement)
+    "W0212", # Access to a protected member
 ]
 
 [tool.pytest.ini_options]

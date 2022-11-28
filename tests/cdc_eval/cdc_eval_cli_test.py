@@ -31,7 +31,8 @@ class CDCEvalCLITest(unittest.TestCase):
     def test_parse_args_invalid_subcommand_should_raise_system_exit(self):
         self.assertRaises(SystemExit, cdc_eval_cli.CDCEvalCLI._parse_args, ['kaggle'])
 
-    def test_parse_args_kaggle_online_retail_uci_missing_mandatory_args_should_raise_system_exit(  # noqa E501
+    # pylint: disable=line-too-long
+    def test_parse_args_kaggle_online_retail_uci_missing_mandatory_args_should_raise_system_exit(
             self):
 
         self.assertRaises(SystemExit, cdc_eval_cli.CDCEvalCLI._parse_args,
