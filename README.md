@@ -1,16 +1,15 @@
 # cdc-evaluation-framework
 
-A provider-agnostic framework to evaluate ordinary Change Data Capture (CDC)
-features, comprising:
+A provider-agnostic framework to evaluate ordinary Change Data Capture (CDC) features,
+comprising:
 
 1. A high-level evaluation plan.
 2. SQL statements to set up source and destination DB/DW environments.
-3. SQL statements to fully ingest CSV files into the source database tables.
-4. Python scripts to manage chunks of data in the source database tables and enable 
-   users to evaluate CDC tools' capabilities.
+3. SQL statements to fully ingest CSV files into the source tables.
+4. Python scripts to manage ad-hoc chunks of data in the source tables.
 
-The framework is intended to allow users to evaluate replication/streaming
-capabilities using the tools of their choice.
+The framework is intended to allow users to evaluate replication/streaming capabilities
+using the tools of their choice.
 
 [![license](https://img.shields.io/github/license/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/blob/main/LICENSE)
 [![issues](https://img.shields.io/github/issues/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/issues)
@@ -58,8 +57,8 @@ The high-level CDC evaluation plan comprises 5 major steps:
 2. Start the replication/streaming jobs using the CDC tool of your choice.
 3. _[Optional]_ Wait for the CDC tool to stream all existing data (aka take an
    initial snapshot).
-4. Insert/update/delete records into/from the source tables using the Python
-   scripts provided by the present framework.
+4. Insert/update/delete records into/from the source tables using the Python scripts
+   provided by the present framework.
 5. Monitor the CDC tool to make sure it is properly streaming all data changes.
 
 ## 2. Environment setup
@@ -68,13 +67,13 @@ The high-level CDC evaluation plan comprises 5 major steps:
 
 #### 2.1.1. Install Python 3.8+
 
-Please refer to [python.org/downloads](https://www.python.org/downloads/) for
-further details.
+Please refer to [python.org/downloads](https://www.python.org/downloads/) for further
+details.
 
 #### 2.1.2. Create a folder
 
-This is recommended so all related stuff will reside at the same place, making
-it easier to follow the next instructions.
+This is recommended so all related stuff will reside at the same place, making it easier
+to follow the next instructions.
 
 ```shell
 mkdir ./cdc-evaluation-framework
@@ -126,8 +125,7 @@ mv online_retail_II.csv /tmp/
 #### 3.1.2. Set up the source and destination DB/DW
 
 Please refer to the
-[sql/kaggle-online-retail-ii-uci](./sql/kaggle-online-retail-ii-uci)
-folder for help. 
+[sql/kaggle-online-retail-ii-uci](./sql/kaggle-online-retail-ii-uci) folder for help. 
 
 #### 3.1.3. Load all transaction data into a MySQL source table
 
@@ -193,8 +191,8 @@ Conduct](https://github.com/ricardolsmendes/cdc-evaluation-framework/blob/main/.
 Please report bugs and suggest features via the [GitHub
 Issues](https://github.com/ricardolsmendes/cdc-evaluation-framework/issues).
 
-Before opening an issue, search the tracker for possible duplicates. If you find a duplicate, please
-add a comment saying that you encountered the problem as well.
+Before opening an issue, search the tracker for possible duplicates. If you find a
+duplicate, please add a comment saying that you encountered the problem as well.
 
 ### 4.2. Contribute code
 
