@@ -68,12 +68,12 @@ class CDCEvalCLI:
 
     @classmethod
     def __use_kaggle_online_retail_uci_ds(cls, args):
-        kaggle_online_retail_ii_uci.Runner().run(data_file=args.data_file,
-                                                 invoices=int(args.invoices),
-                                                 db_conn=args.db_conn,
-                                                 operation_delay=float(
-                                                     args.operation_delay),
-                                                 operation_mode=args.operation_mode)
+        kaggle_online_retail_ii_uci.Runner.run(data_file=args.data_file,
+                                               invoices=int(args.invoices),
+                                               db_conn=args.db_conn,
+                                               operation_delay=float(
+                                                   args.operation_delay),
+                                               operation_mode=args.operation_mode)
 
 
 """
