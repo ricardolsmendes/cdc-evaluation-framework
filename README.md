@@ -5,14 +5,16 @@ features, comprising:
 
 1. A high-level evaluation plan.
 2. SQL statements to set up source and destination DB/DW environments.
-3. SQL statements to fully ingest CSV files into database tables.
-4. Python scripts to manage chunks of data in transactional databases.
+3. SQL statements to fully ingest CSV files into the source database tables.
+4. Python scripts to manage chunks of data in the source database tables and enable 
+   users to evaluate CDC tools' capabilities.
 
 The framework is intended to allow users to evaluate replication/streaming
 capabilities using the tools of their choice.
 
 [![license](https://img.shields.io/github/license/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/blob/main/LICENSE)
 [![issues](https://img.shields.io/github/issues/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/issues)
+[![continuous integration](https://github.com/ricardolsmendes/cdc-evaluation-framework/actions/workflows/continuous-integration.yaml/badge.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/actions/workflows/continuous-integration.yaml)
 
 <!--
   DO NOT UPDATE THE TABLE OF CONTENTS MANUALLY
@@ -101,13 +103,13 @@ COMING SOON!
 
 > The Online Retail II data set contains all the transactions occurring for a
 > UK-based and registered, non-store online retail between 01/12/2009 and
-> 09/12/2011.The company mainly sells unique all-occasion gift-ware. Many
+> 09/12/2011. The company mainly sells unique all-occasion gift-ware. Many
 > customers of the company are wholesalers.
 
 Summary:
 
 | Industry | Rows      | Columns | Verified at |
-| -------- | --------- | ------: | ----------: |
+|----------|-----------|--------:|------------:|
 | Retail   | 1,067,371 |       8 |  2022-05-23 |
 
 #### 3.1.1. Download the dataset
