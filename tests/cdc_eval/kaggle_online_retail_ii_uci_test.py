@@ -30,8 +30,19 @@ class CSVFilesReaderTest(unittest.TestCase):
         mock_read_csv.assert_called_once_with('test.csv')
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.pd.read_csv')
-    def test_read_transactions_should_return_data_frame(self, mock_read_csv):
+    def test_read_transactions_should_return_data_frame_on_success(self, mock_read_csv):
         fake_data_frame = pd.DataFrame()
         mock_read_csv.return_value = fake_data_frame
         return_value = online_retail.CSVFilesReader.read_transactions('test.csv')
         self.assertTrue(fake_data_frame.equals(return_value))
+
+
+class TransactionsDBManagerTest(unittest.TestCase):
+
+    def setUp(self):
+        self._manager = online_retail.TransactionsDBManager(
+            db_conn_string='test-db-conn')
+
+    def test_constructor_should_set_instance_attributes(self):
+        attrs = self._manager.__dict__
+        self.assertEqual('test-db-conn', attrs['_db_conn_string'])

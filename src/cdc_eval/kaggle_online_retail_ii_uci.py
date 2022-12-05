@@ -56,7 +56,7 @@ Transactions database manager
 class TransactionsDBManager:
 
     def __init__(self, db_conn_string: str):
-        self.__db_conn_string = db_conn_string
+        self._db_conn_string = db_conn_string
 
     def delete_invoices(self, transactions: DataFrame, operation_delay: float) -> None:
 
@@ -136,7 +136,7 @@ class TransactionsDBManager:
         logging.info('==================================================')
 
     def create_db_connection(self) -> Engine:
-        return sqlalchemy.create_engine(self.__db_conn_string)
+        return sqlalchemy.create_engine(self._db_conn_string)
 
     @classmethod
     def get_existing_table(cls, con: Engine, table_name: str) -> Table:
@@ -169,7 +169,6 @@ class PandasHelper:
 
     @classmethod
     def select_random_subsets(cls, df: DataFrame, id_column: str, n: int) -> DataFrame:
-
         logging.info('')
         logging.info('Selecting %d random subsets...', n)
         unique_subset_ids = cls.select_unique_values(df, id_column)

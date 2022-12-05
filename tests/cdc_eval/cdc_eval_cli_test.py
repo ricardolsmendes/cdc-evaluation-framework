@@ -20,16 +20,16 @@ from cdc_eval import cdc_eval_cli
 
 
 class CDCEvalCLITest(unittest.TestCase):
-    __CLI_MODULE = 'cdc_eval.cdc_eval_cli'
-    __CLI_CLASS = f'{__CLI_MODULE}.CDCEvalCLI'
+    _CLI_MODULE = 'cdc_eval.cdc_eval_cli'
+    _CLI_CLASS = f'{_CLI_MODULE}.CDCEvalCLI'
 
-    @mock.patch(f'{__CLI_CLASS}._parse_args')
+    @mock.patch(f'{_CLI_CLASS}._parse_args')
     def test_run_should_parse_args(self, mock_parse_args):
         cdc_eval_cli.CDCEvalCLI.run([])
         mock_parse_args.assert_called_once()
 
-    @mock.patch(f'{__CLI_CLASS}._CDCEvalCLI__use_kaggle_online_retail_uci_ds')
-    @mock.patch(f'{__CLI_CLASS}._parse_args')
+    @mock.patch(f'{_CLI_CLASS}._use_kaggle_online_retail_uci_ds')
+    @mock.patch(f'{_CLI_CLASS}._parse_args')
     def test_run_should_call_worker_method(self, mock_parse_args,
                                            mock_use_kaggle_online_retail_uci_ds):
 
@@ -70,7 +70,7 @@ class CDCEvalCLITest(unittest.TestCase):
         self.assertEqual('3', args.operation_delay)
         self.assertEqual('delete', args.operation_mode)
 
-    @mock.patch(f'{__CLI_CLASS}._CDCEvalCLI__use_kaggle_online_retail_uci_ds')
+    @mock.patch(f'{_CLI_CLASS}._use_kaggle_online_retail_uci_ds')
     def test_parse_args_kaggle_online_retail_uci_should_set_default_function(
             self, mock_use_kaggle_online_retail_uci_ds):
 
@@ -80,7 +80,7 @@ class CDCEvalCLITest(unittest.TestCase):
         ])
         self.assertEqual(mock_use_kaggle_online_retail_uci_ds, args.func)
 
-    @mock.patch(f'{__CLI_MODULE}.kaggle_online_retail_ii_uci.Runner')
+    @mock.patch(f'{_CLI_MODULE}.kaggle_online_retail_ii_uci.Runner')
     def test_use_kaggle_online_retail_uci_ds_should_insert_tags_from_csv(
             self, mock_runner):
         cdc_eval_cli.CDCEvalCLI.run([
@@ -93,7 +93,7 @@ class CDCEvalCLITest(unittest.TestCase):
                                            operation_delay=1.0,
                                            operation_mode='insert')
 
-    @mock.patch(f'{__CLI_CLASS}.run')
+    @mock.patch(f'{_CLI_CLASS}.run')
     def test_main_should_call_cli_run(self, mock_run):
         cdc_eval.main()
         mock_run.assert_called_once()
