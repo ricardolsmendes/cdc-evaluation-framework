@@ -59,7 +59,6 @@ class TransactionsDBManager:
         self._db_conn_string = db_conn_string
 
     def delete_invoices(self, transactions: DataFrame, operation_delay: float) -> None:
-
         logging.info('')
         logging.info('Connecting to the database...')
         con = self.create_db_connection()
@@ -93,7 +92,6 @@ class TransactionsDBManager:
         logging.info('==================================================')
 
     def insert_invoices(self, transactions: DataFrame, operation_delay: float) -> None:
-
         logging.info('')
         logging.info('Connecting to the database...')
         con = self.create_db_connection()
