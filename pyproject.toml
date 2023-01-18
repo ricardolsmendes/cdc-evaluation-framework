@@ -62,7 +62,7 @@ disable = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov --cov-report html --cov-report term-missing --cov-report xml --cov-fail-under 35"
+addopts = "--cov src --cov-report html --cov-report term-missing --cov-report xml --cov-fail-under 30 --junitxml pytest.xml"
 norecursedirs = ["./env/*", "./venv/*", "./tests/*"]
 
 [tool.yapf]

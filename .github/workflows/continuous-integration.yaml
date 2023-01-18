@@ -33,6 +33,7 @@ jobs:
       - name: Comment unit test coverage
         uses: MishaKav/pytest-coverage-comment@main
         with:
+          junitxml-path: ./pytest.xml
           pytest-xml-coverage-path: ./coverage.xml
       - name: Run YAPF style check on source and test code
         run: |
