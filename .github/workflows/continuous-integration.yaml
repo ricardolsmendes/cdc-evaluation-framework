@@ -29,12 +29,11 @@ jobs:
           flit install --deps=develop -s
       - name: Run unit tests with pytest
         run: |
-          pytest
+          pytest | tee ./pytest-coverage.txt
       - name: Comment unit test coverage
         uses: MishaKav/pytest-coverage-comment@main
         with:
           junitxml-path: ./pytest.xml
-          pytest-xml-coverage-path: ./coverage.xml
       - name: Run YAPF style check on source and test code
         run: |
           yapf --diff --recursive ./src ./tests

@@ -62,8 +62,7 @@ disable = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov src --cov-report html --cov-report term-missing --cov-report xml --cov-fail-under 30 --junitxml pytest.xml"
-norecursedirs = ["./env/*", "./venv/*", "./tests/*"]
+addopts = "--cov src --cov-report html --cov-report term-missing --cov-fail-under 30 --junitxml pytest-junit.xml"
 
 [tool.yapf]
 blank_line_before_nested_class_or_def = true
