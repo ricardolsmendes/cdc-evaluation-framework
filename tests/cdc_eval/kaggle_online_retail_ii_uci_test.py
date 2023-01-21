@@ -91,3 +91,10 @@ class TransactionsDBManagerTest(unittest.TestCase):
 
         self._db_manager.insert_invoices(transactions, 0)
         self.assertEqual(mock_to_sql.call_count, 4)  # One call for each invoice
+
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.create_engine')
+    def test_create_db_connection_should_delegate_to_sqlalchemy(
+            self, mock_create_engine):
+
+        self._db_manager.create_db_connection()
+        mock_create_engine.assert_called_once_with('test-db-conn')
