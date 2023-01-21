@@ -50,9 +50,9 @@ class TransactionsDBManagerTest(unittest.TestCase):
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.delete')
     @mock.patch(f'{_DB_MANAGER_CLASS}.get_existing_table')
-    @mock.patch(f'{_DB_MANAGER_CLASS}.create_db_connection')
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.create_engine')
     def test_delete_invoices_should_delete_by_unique_invoice_numbers(
-            self, mock_create_db_connection, mock_get_existing_table, mock_delete):
+            self, mock_create_engine, mock_get_existing_table, mock_delete):
 
         data = {
             'Invoice': [489434, 489434, 489435, 489436, 489436, 489437],
@@ -65,17 +65,18 @@ class TransactionsDBManagerTest(unittest.TestCase):
             'Quantity': [12, 12, 12, 18, 18, 6]
         }
         transactions = pd.DataFrame(data)
-        mock_conn = mock_create_db_connection.return_value
+        mock_conn = mock_create_engine.return_value
 
         self._db_manager.delete_invoices(transactions, 0)
 
+        mock_create_engine.assert_called_once_with('test-db-conn')
         mock_get_existing_table.assert_called_once_with(mock_conn, 'transactions')
         self.assertEqual(mock_delete.call_count, 4)  # One call for each invoice number
 
     @mock.patch('pandas.io.sql.to_sql')
-    @mock.patch(f'{_DB_MANAGER_CLASS}.create_db_connection', lambda *args: None)
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.create_engine')
     def test_insert_invoices_should_insert_item_batches_grouped_by_invoice(
-            self, mock_to_sql):
+            self, mock_create_engine, mock_to_sql):
 
         data = {
             'Invoice': [489434, 489434, 489435, 489436, 489436, 489437],
@@ -90,11 +91,6 @@ class TransactionsDBManagerTest(unittest.TestCase):
         transactions = pd.DataFrame(data)
 
         self._db_manager.insert_invoices(transactions, 0)
-        self.assertEqual(mock_to_sql.call_count, 4)  # One call for each invoice
 
-    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.create_engine')
-    def test_create_db_connection_should_delegate_to_sqlalchemy(
-            self, mock_create_engine):
-
-        self._db_manager.create_db_connection()
         mock_create_engine.assert_called_once_with('test-db-conn')
+        self.assertEqual(mock_to_sql.call_count, 4)  # One call for each invoice

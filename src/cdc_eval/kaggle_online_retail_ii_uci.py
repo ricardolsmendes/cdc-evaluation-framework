@@ -61,7 +61,7 @@ class TransactionsDBManager:
     def delete_invoices(self, transactions: DataFrame, operation_delay: float) -> None:
         logging.info('')
         logging.info('Connecting to the database...')
-        con = self.create_db_connection()
+        con = sqlalchemy.create_engine(self._db_conn_string)
 
         logging.info('')
         logging.info('Getting the existing "transactions" table...')
@@ -94,7 +94,7 @@ class TransactionsDBManager:
     def insert_invoices(self, transactions: DataFrame, operation_delay: float) -> None:
         logging.info('')
         logging.info('Connecting to the database...')
-        con = self.create_db_connection()
+        con = sqlalchemy.create_engine(self._db_conn_string)
 
         logging.info('')
         logging.info('Inserting invoices...')
@@ -132,9 +132,6 @@ class TransactionsDBManager:
 
         logging.info('DONE!')
         logging.info('==================================================')
-
-    def create_db_connection(self) -> Engine:
-        return sqlalchemy.create_engine(self._db_conn_string)
 
     @classmethod
     def get_existing_table(cls, con: Engine, table_name: str) -> Table:
