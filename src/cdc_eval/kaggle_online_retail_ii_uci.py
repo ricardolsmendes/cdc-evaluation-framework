@@ -1,4 +1,4 @@
-# Copyright 2022 Ricardo Mendes
+# Copyright 2023 Ricardo Mendes
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -137,7 +137,7 @@ class TransactionsDBManager:
     def get_existing_table(cls, con: Engine, table_name: str) -> Table:
         metadata = sqlalchemy.MetaData()
         metadata.reflect(bind=con)
-        return metadata.tables[table_name]
+        return metadata.tables.get(table_name, None)
 
 
 """

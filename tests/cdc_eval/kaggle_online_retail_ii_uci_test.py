@@ -16,6 +16,7 @@ import unittest
 from unittest import mock
 
 import pandas as pd
+import sqlalchemy
 
 from cdc_eval import kaggle_online_retail_ii_uci as online_retail
 
@@ -33,8 +34,8 @@ class CSVFilesReaderTest(unittest.TestCase):
     def test_read_transactions_should_return_data_frame_on_success(self, mock_read_csv):
         data_frame = pd.DataFrame()
         mock_read_csv.return_value = data_frame
-        return_value = online_retail.CSVFilesReader.read_transactions('test.csv')
-        self.assertTrue(data_frame.equals(return_value))
+        transactions = online_retail.CSVFilesReader.read_transactions('test.csv')
+        self.assertTrue(data_frame.equals(transactions))
 
 
 class TransactionsDBManagerTest(unittest.TestCase):
@@ -94,3 +95,27 @@ class TransactionsDBManagerTest(unittest.TestCase):
 
         mock_create_engine.assert_called_once_with('test-db-conn')
         self.assertEqual(mock_to_sql.call_count, 4)  # One call for each invoice
+
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.MetaData')
+    def test_get_existing_table_should_return_table_if_exists(self, mock_metadata):
+        mock_conn = mock.MagicMock()
+        tables = {'transactions': sqlalchemy.Table()}
+        metadata = mock_metadata.return_value
+        metadata.tables = tables
+
+        table = self._db_manager.get_existing_table(mock_conn, 'transactions')
+
+        self.assertEqual(tables['transactions'], table)
+        metadata.reflect.assert_called_once_with(bind=mock_conn)
+
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.MetaData')
+    def test_get_existing_table_should_return_none_if_not_exists(self, mock_metadata):
+        mock_conn = mock.MagicMock()
+        tables = {'transactions': sqlalchemy.Table()}
+        metadata = mock_metadata.return_value
+        metadata.tables = tables
+
+        table = self._db_manager.get_existing_table(mock_conn, 'invoices')
+
+        self.assertIsNone(table)
+        metadata.reflect.assert_called_once_with(bind=mock_conn)
