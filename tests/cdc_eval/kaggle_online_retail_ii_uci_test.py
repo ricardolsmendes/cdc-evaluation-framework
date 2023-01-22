@@ -119,3 +119,38 @@ class TransactionsDBManagerTest(unittest.TestCase):
 
         self.assertIsNone(table)
         metadata.reflect.assert_called_once_with(bind=mock_conn)
+
+
+class PandasHelperTest(unittest.TestCase):
+    _PANDAS_HELPER_CLASS = f'{_ONLINE_RETAIL_MODULE}.PandasHelper'
+
+    @mock.patch(f'{_PANDAS_HELPER_CLASS}.select_random_items')
+    @mock.patch(f'{_PANDAS_HELPER_CLASS}.get_unique_values')
+    def test_select_random_subsets_should_return_dataframe_of_specified_size(
+            self, mock_get_unique_values, mock_select_random_items):
+
+        data = {
+            'Invoice': [489434, 489434, 489435, 489436, 489436, 489437],
+            'StockCode': ['85048', '79323P', '22350', '48173C', '21755', '22143'],
+            'Description': [
+                '15CM CHRISTMAS GLASS BALL 20 LIGHTS', 'PINK CHERRY LIGHTS', 'CAT BOWL',
+                'DOOR MAT BLACK FLOCK', 'LOVE BUILDING BLOCK WORD',
+                'CHRISTMAS CRAFT HEART DECORATIONS'
+            ],
+            'Quantity': [12, 12, 12, 18, 18, 6]
+        }
+        df = pd.DataFrame(data)
+        id_column = 'Invoice'
+
+        unique_values = pd.DataFrame({id_column: [489434, 489435, 489436, 489437]})
+        mock_get_unique_values.return_value = unique_values
+
+        random_items = pd.DataFrame({id_column: [489434, 489436]})
+        mock_select_random_items.return_value = random_items
+
+        subsets = online_retail.PandasHelper.select_random_subsets(df, id_column, 2)
+
+        self.assertEqual(random_items[id_column].unique().all(),
+                         subsets[id_column].unique().all())
+        mock_get_unique_values.asset_called_once_with(df, 'Invoice')
+        mock_select_random_items.asset_called_once_with(unique_values, 2)

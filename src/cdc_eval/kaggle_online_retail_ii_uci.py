@@ -163,24 +163,37 @@ class PandasHelper:
         logging.info('==================================================')
 
     @classmethod
+    def get_unique_values(cls, df: DataFrame, column: str) -> DataFrame:
+        logging.info('')
+        logging.info('Getting unique values for "%s"...', column)
+        unique_values = df[column].unique()
+        logging.info('  > %d found', len(unique_values))
+        logging.info('DONE!')
+
+        unique_values_df = pd.DataFrame(unique_values, columns=[column])
+        cls.print_df_metadata(unique_values_df)
+
+        return unique_values_df
+
+    @classmethod
     def select_random_subsets(cls, df: DataFrame, id_column: str, n: int) -> DataFrame:
         logging.info('')
         logging.info('Selecting %d random subsets...', n)
-        unique_subset_ids = cls.select_unique_values(df, id_column)
-        random_subset_ids = cls.select_random_items(unique_subset_ids, n)
+        unique_ids = cls.get_unique_values(df, id_column)
+        random_ids = cls.select_random_items(unique_ids, n)
 
-        random_subsets = pd.DataFrame()
+        subsets = pd.DataFrame()
 
-        for _, row in random_subset_ids.iterrows():
+        for _, row in random_ids.iterrows():
             subset_id = row[id_column]
             subset = df[df[id_column] == subset_id]
-            random_subsets = pd.concat([random_subsets, subset])
+            subsets = pd.concat([subsets, subset])
 
         logging.info('DONE!')
 
-        cls.print_df_metadata(random_subsets)
+        cls.print_df_metadata(subsets)
 
-        return random_subsets
+        return subsets
 
     @classmethod
     def select_random_items(cls, df: DataFrame, n: int) -> DataFrame:
@@ -192,19 +205,6 @@ class PandasHelper:
         cls.print_df_metadata(random_items)
 
         return random_items
-
-    @classmethod
-    def select_unique_values(cls, df: DataFrame, column: str) -> DataFrame:
-        logging.info('')
-        logging.info('Selecting unique values for "%s"...', column)
-        unique_values = df[column].unique()
-        logging.info('  > %d found', len(unique_values))
-        logging.info('DONE!')
-
-        unique_values_df = pd.DataFrame(unique_values, columns=[column])
-        cls.print_df_metadata(unique_values_df)
-
-        return unique_values_df
 
 
 """
