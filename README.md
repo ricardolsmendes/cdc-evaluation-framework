@@ -14,8 +14,8 @@ using the tools of their choice.
 [![license](https://img.shields.io/github/license/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/blob/main/LICENSE)
 [![issues](https://img.shields.io/github/issues/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/issues)
 [![continuous integration](https://github.com/ricardolsmendes/cdc-evaluation-framework/actions/workflows/continuous-integration.yaml/badge.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/actions/workflows/continuous-integration.yaml)
+
 <!-- Pytest Coverage Comment:Begin -->
-<a href="https://github.com/ricardolsmendes/cdc-evaluation-framework/blob/main/README.md"><img alt="Coverage" src="https://img.shields.io/badge/Coverage-100%25-brightgreen.svg" /></a><details><summary>Coverage Report </summary><table><tr><th>File</th><th>Stmts</th><th>Miss</th><th>Cover</th></tr><tbody><tr><td colspan="4"><b>src/cdc_eval</b></td></tr><tr><td>&nbsp; &nbsp;<a href="https://github.com/ricardolsmendes/cdc-evaluation-framework/blob/main/src/cdc_eval/cdc_eval_cli.py">cdc_eval_cli.py</a></td><td>32</td><td>0</td><td>100%</td></tr><tr><td>&nbsp; &nbsp;<a href="https://github.com/ricardolsmendes/cdc-evaluation-framework/blob/main/src/cdc_eval/kaggle_online_retail_ii_uci.py">kaggle_online_retail_ii_uci.py</a></td><td>122</td><td>0</td><td>100%</td></tr><tr><td><b>TOTAL</b></td><td><b>154</b></td><td><b>0</b></td><td><b>100%</b></td></tr></tbody></table></details>
 <!-- Pytest Coverage Comment:End -->
 
 <!--

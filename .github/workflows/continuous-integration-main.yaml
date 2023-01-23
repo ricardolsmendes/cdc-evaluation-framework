@@ -14,7 +14,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Otherwise, it will fail to push refs to the destination repo.
-          persist-credentials: false # Use your personal token instead of GITHUB_TOKEN.
       - name: Set up Python 3.8
         uses: actions/setup-python@v4
       - name: Install dependencies
@@ -32,16 +31,16 @@ jobs:
         run: |
           pylint ./src ./tests
       - name: Generate unit test coverage report
-        id: coverageReport
+        id: coverage-report
         uses: MishaKav/pytest-coverage-comment@main
         with:
           hide-comment: true
           junitxml-path: ./pytest-junit.xml
       - name: Update README.md with coverage html
         run: |
-          sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.coverageReport.outputs.coverageHtml }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
+          sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.coverage-report.outputs.coverageHtml }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
       - name: Commit & Push changes to README.md
         uses: actions-js/push@master
         with:
-          message: Update coverage on README.md
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: Update coverage on README.md
