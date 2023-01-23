@@ -187,7 +187,7 @@ class PandasHelper:
         for _, row in random_ids.iterrows():
             subset_id = row[id_column]
             subset = df[df[id_column] == subset_id]
-            subsets = pd.concat([subsets, subset])
+            subsets = pd.concat([subsets, subset], ignore_index=True)
 
         logging.info('DONE!')
 
