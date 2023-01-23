@@ -14,6 +14,8 @@ using the tools of their choice.
 [![license](https://img.shields.io/github/license/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/blob/main/LICENSE)
 [![issues](https://img.shields.io/github/issues/ricardolsmendes/cdc-evaluation-framework.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/issues)
 [![continuous integration](https://github.com/ricardolsmendes/cdc-evaluation-framework/actions/workflows/continuous-integration.yaml/badge.svg)](https://github.com/ricardolsmendes/cdc-evaluation-framework/actions/workflows/continuous-integration.yaml)
+<!-- Pytest Coverage Comment:Begin -->
+<!-- Pytest Coverage Comment:End -->
 
 <!--
   DO NOT UPDATE THE TABLE OF CONTENTS MANUALLY
