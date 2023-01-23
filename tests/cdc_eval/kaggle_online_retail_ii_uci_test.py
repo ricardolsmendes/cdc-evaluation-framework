@@ -197,3 +197,63 @@ class PandasHelperTest(unittest.TestCase):
 
         pd.testing.assert_frame_equal(df_sample_return, random_items)
         mock_sample.asset_called_once_with(2)
+
+
+class RunnerTest(unittest.TestCase):
+    _CSV_READER_CLASS = f'{_ONLINE_RETAIL_MODULE}.CSVFilesReader'
+    _PANDAS_HELPER_CLASS = f'{_ONLINE_RETAIL_MODULE}.PandasHelper'
+
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.TransactionsDBManager')
+    @mock.patch(f'{_PANDAS_HELPER_CLASS}.select_random_subsets')
+    @mock.patch(f'{_CSV_READER_CLASS}.read_transactions')
+    def test_run_should_read_all_transactions_from_file_and_insert_into_db(
+            self, mock_read_transactions, mock_select_random_subsets, mock_db_manager):
+
+        mock_conn = mock.MagicMock()
+        transactions_df = pd.DataFrame()
+        mock_read_transactions.return_value = transactions_df
+
+        online_retail.Runner.run('test.csv', 0, mock_conn, 0, 'insert')
+
+        mock_read_transactions.assert_called_once_with('test.csv')
+        mock_select_random_subsets.assert_not_called()
+        mock_db_manager.assert_called_once_with(mock_conn)
+        mock_db_manager.return_value.delete_invoices.assert_not_called()
+        mock_db_manager.return_value.insert_invoices.assert_called_once_with(
+            transactions=transactions_df, operation_delay=0)
+
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.TransactionsDBManager', mock.MagicMock())
+    @mock.patch(f'{_PANDAS_HELPER_CLASS}.select_random_subsets')
+    @mock.patch(f'{_CSV_READER_CLASS}.read_transactions')
+    def test_run_should_optionally_read_n_random_transactions_from_file(
+            self, mock_read_transactions, mock_select_random_subsets):
+
+        mock_conn = mock.MagicMock()
+        transactions_df = pd.DataFrame()
+        mock_read_transactions.return_value = transactions_df
+        random_transactions_df = pd.DataFrame()
+        mock_select_random_subsets.return_value = random_transactions_df
+
+        online_retail.Runner.run('test.csv', 1000, mock_conn, 0, 'insert')
+
+        mock_read_transactions.assert_called_once_with('test.csv')
+        mock_select_random_subsets.assert_called_once_with(transactions_df, 'Invoice',
+                                                           1000)
+
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.TransactionsDBManager')
+    @mock.patch(f'{_CSV_READER_CLASS}.read_transactions', lambda *args: None)
+    def test_run_should_insert_into_db_by_default(self, mock_db_manager):
+
+        online_retail.Runner.run('test.csv', 0, mock.MagicMock(), 0, '')
+
+        mock_db_manager.return_value.delete_invoices.assert_not_called()
+        mock_db_manager.return_value.insert_invoices.assert_called_once()
+
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.TransactionsDBManager')
+    @mock.patch(f'{_CSV_READER_CLASS}.read_transactions', lambda *args: None)
+    def test_run_should_delete_from_db_mode_is_delete(self, mock_db_manager):
+
+        online_retail.Runner.run('test.csv', 0, mock.MagicMock(), 0, 'delete')
+
+        mock_db_manager.return_value.delete_invoices.assert_called_once()
+        mock_db_manager.return_value.insert_invoices.assert_not_called()
