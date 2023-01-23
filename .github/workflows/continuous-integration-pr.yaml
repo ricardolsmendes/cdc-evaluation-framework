@@ -13,7 +13,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8, 3.9, "3.10"]
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -28,13 +27,17 @@ jobs:
       - name: Run unit tests with pytest
         run: |
           pytest | tee ./pytest-coverage.txt
-      - name: Comment unit test coverage
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          junitxml-path: ./pytest-junit.xml
       - name: Run YAPF style check on source and test code
         run: |
           yapf --diff --recursive ./src ./tests
       - name: Run Pylint linter on source and test code
         run: |
           pylint ./src ./tests
+
+  comment-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment unit test coverage
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          junitxml-path: ./pytest-junit.xml
