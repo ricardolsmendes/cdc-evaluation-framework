@@ -1,4 +1,4 @@
-# Copyright 2022 Ricardo Mendes
+# Copyright 2023 Ricardo Mendes
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,13 +56,12 @@ Transactions database manager
 class TransactionsDBManager:
 
     def __init__(self, db_conn_string: str):
-        self.__db_conn_string = db_conn_string
+        self._db_conn_string = db_conn_string
 
     def delete_invoices(self, transactions: DataFrame, operation_delay: float) -> None:
-
         logging.info('')
         logging.info('Connecting to the database...')
-        con = self.create_db_connection()
+        con = sqlalchemy.create_engine(self._db_conn_string)
 
         logging.info('')
         logging.info('Getting the existing "transactions" table...')
@@ -93,10 +92,9 @@ class TransactionsDBManager:
         logging.info('==================================================')
 
     def insert_invoices(self, transactions: DataFrame, operation_delay: float) -> None:
-
         logging.info('')
         logging.info('Connecting to the database...')
-        con = self.create_db_connection()
+        con = sqlalchemy.create_engine(self._db_conn_string)
 
         logging.info('')
         logging.info('Inserting invoices...')
@@ -135,14 +133,11 @@ class TransactionsDBManager:
         logging.info('DONE!')
         logging.info('==================================================')
 
-    def create_db_connection(self) -> Engine:
-        return sqlalchemy.create_engine(self.__db_conn_string)
-
     @classmethod
     def get_existing_table(cls, con: Engine, table_name: str) -> Table:
         metadata = sqlalchemy.MetaData()
         metadata.reflect(bind=con)
-        return metadata.tables[table_name]
+        return metadata.tables.get(table_name, None)
 
 
 """
@@ -168,25 +163,37 @@ class PandasHelper:
         logging.info('==================================================')
 
     @classmethod
-    def select_random_subsets(cls, df: DataFrame, id_column: str, n: int) -> DataFrame:
+    def get_unique_values(cls, df: DataFrame, column: str) -> DataFrame:
+        logging.info('')
+        logging.info('Getting unique values for "%s"...', column)
+        unique_values = df[column].unique()
+        logging.info('  > %d found', len(unique_values))
+        logging.info('DONE!')
 
+        unique_values_df = pd.DataFrame(unique_values, columns=[column])
+        cls.print_df_metadata(unique_values_df)
+
+        return unique_values_df
+
+    @classmethod
+    def select_random_subsets(cls, df: DataFrame, id_column: str, n: int) -> DataFrame:
         logging.info('')
         logging.info('Selecting %d random subsets...', n)
-        unique_subset_ids = cls.select_unique_values(df, id_column)
-        random_subset_ids = cls.select_random_items(unique_subset_ids, n)
+        unique_ids = cls.get_unique_values(df, id_column)
+        random_ids = cls.select_random_items(unique_ids, n)
 
-        random_subsets = pd.DataFrame()
+        subsets = pd.DataFrame()
 
-        for _, row in random_subset_ids.iterrows():
+        for _, row in random_ids.iterrows():
             subset_id = row[id_column]
             subset = df[df[id_column] == subset_id]
-            random_subsets = pd.concat([random_subsets, subset])
+            subsets = pd.concat([subsets, subset], ignore_index=True)
 
         logging.info('DONE!')
 
-        cls.print_df_metadata(random_subsets)
+        cls.print_df_metadata(subsets)
 
-        return random_subsets
+        return subsets
 
     @classmethod
     def select_random_items(cls, df: DataFrame, n: int) -> DataFrame:
@@ -198,19 +205,6 @@ class PandasHelper:
         cls.print_df_metadata(random_items)
 
         return random_items
-
-    @classmethod
-    def select_unique_values(cls, df: DataFrame, column: str) -> DataFrame:
-        logging.info('')
-        logging.info('Selecting unique values for "%s"...', column)
-        unique_values = df[column].unique()
-        logging.info('  > %d found', len(unique_values))
-        logging.info('DONE!')
-
-        unique_values_df = pd.DataFrame(unique_values, columns=[column])
-        cls.print_df_metadata(unique_values_df)
-
-        return unique_values_df
 
 
 """

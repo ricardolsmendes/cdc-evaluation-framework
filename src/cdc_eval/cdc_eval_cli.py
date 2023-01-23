@@ -23,13 +23,13 @@ class CDCEvalCLI:
 
     @classmethod
     def run(cls, argv):
-        cls.__setup_logging()
+        cls._setup_logging()
 
         args = cls._parse_args(argv)
         args.func(args)
 
     @classmethod
-    def __setup_logging(cls):
+    def _setup_logging(cls):
         logging.basicConfig(level=logging.INFO)
 
     @classmethod
@@ -62,18 +62,18 @@ class CDCEvalCLI:
             default='insert')
 
         kaggle_online_retail_uci_parser.set_defaults(
-            func=cls.__use_kaggle_online_retail_uci_ds)
+            func=cls._use_kaggle_online_retail_uci_ds)
 
         return parser.parse_args(argv)
 
     @classmethod
-    def __use_kaggle_online_retail_uci_ds(cls, args):
-        kaggle_online_retail_ii_uci.Runner().run(data_file=args.data_file,
-                                                 invoices=int(args.invoices),
-                                                 db_conn=args.db_conn,
-                                                 operation_delay=float(
-                                                     args.operation_delay),
-                                                 operation_mode=args.operation_mode)
+    def _use_kaggle_online_retail_uci_ds(cls, args):
+        kaggle_online_retail_ii_uci.Runner.run(data_file=args.data_file,
+                                               invoices=int(args.invoices),
+                                               db_conn=args.db_conn,
+                                               operation_delay=float(
+                                                   args.operation_delay),
+                                               operation_mode=args.operation_mode)
 
 
 """

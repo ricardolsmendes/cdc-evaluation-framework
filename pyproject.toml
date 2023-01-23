@@ -68,10 +68,11 @@ disable = [
     "R0903", # Too few public methods (1/2) (too-few-public-methods)
     "R0913", # Too many arguments (6/5) (too-many-arguments)
     "W0105", # String statement has no effect (pointless-string-statement)
+    "W0212", # Access to a protected member
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov --cov-report html --cov-report term-missing --cov-fail-under 30 --junitxml pytest-junit.xml"
+addopts = "--cov --cov-report html --cov-report term-missing --cov-fail-under 95 --junitxml pytest-junit.xml"
 
 [tool.yapf]
 blank_line_before_nested_class_or_def = true
