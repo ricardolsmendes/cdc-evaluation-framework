@@ -73,7 +73,7 @@ class TransactionsDBManagerTest(unittest.TestCase):
         mock_get_existing_table.assert_called_once_with(mock_conn, 'transactions')
         self.assertEqual(mock_delete.call_count, 4)  # One call for each invoice number
 
-    @mock.patch('pandas.io.sql.to_sql')
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.pd.io.sql.to_sql')
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.create_engine')
     def test_insert_invoices_should_insert_item_batches_grouped_by_invoice(
             self, mock_create_engine, mock_to_sql):
@@ -122,7 +122,7 @@ class TransactionsDBManagerTest(unittest.TestCase):
 class PandasHelperTest(unittest.TestCase):
     _PANDAS_HELPER_CLASS = f'{_ONLINE_RETAIL_MODULE}.PandasHelper'
 
-    @mock.patch('pandas.core.series.Series.unique')
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.pd.core.series.Series.unique')
     def test_get_unique_values_should_return_dataframe_with_unique_values_for_column(
             self, mock_unique):
 
@@ -184,3 +184,16 @@ class PandasHelperTest(unittest.TestCase):
         pd.testing.assert_frame_equal(expected_df, subsets)
         mock_get_unique_values.asset_called_once_with(df, 'Invoice')
         mock_select_random_items.asset_called_once_with(unique_values, 2)
+
+    @mock.patch(f'{_ONLINE_RETAIL_MODULE}.pd.DataFrame.sample')
+    def test_select_random_items_should_return_dataframe_of_specified_size(
+            self, mock_sample):
+
+        df = pd.DataFrame({'Invoice': [489434, 489435, 489436, 489437]})
+        df_sample_return = pd.DataFrame({'Invoice': [489435, 489437]})
+        mock_sample.return_value = df_sample_return
+
+        random_items = online_retail.PandasHelper.select_random_items(df, 2)
+
+        pd.testing.assert_frame_equal(df_sample_return, random_items)
+        mock_sample.asset_called_once_with(2)
