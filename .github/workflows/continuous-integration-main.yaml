@@ -1,0 +1,64 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of
+# Python versions.
+
+name: continuous integration (main)
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, "3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
+          flit install --deps=develop -s
+      - name: Run unit tests with pytest
+        run: |
+          pytest | tee ./pytest-coverage.txt
+      - name: Run YAPF style check on source and test code
+        run: |
+          yapf --diff --recursive ./src ./tests
+      - name: Run Pylint linter on source and test code
+        run: |
+          pylint ./src ./tests
+
+  update-coverage-stats-on-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Otherwise, it will fail to push refs to the destination repo
+          persist-credentials: false # Use your personal token instead of GITHUB_TOKEN
+
+      - name: Generate unit test coverage report
+        if: ${{ github.ref == 'refs/heads/main' }}
+        id: coverageReport
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          hide-comment: true
+          junitxml-path: ./pytest-junit.xml
+
+      - name: Update Readme with coverage html
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.coverageReport.outputs.coverageHtml }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
+
+      - name: Commit & Push changes to README.md
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions-js/push@master
+        with:
+          message: Update coverage on Readme
+          github_token: ${{ secrets.GITHUB_TOKEN }}
