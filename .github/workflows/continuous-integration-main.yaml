@@ -36,6 +36,7 @@ jobs:
 
   update-coverage-stats-on-readme:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - uses: actions/checkout@v3
         with:

@@ -36,6 +36,7 @@ jobs:
 
   comment-coverage:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Comment unit test coverage
         uses: MishaKav/pytest-coverage-comment@main
