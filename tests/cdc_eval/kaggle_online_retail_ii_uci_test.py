@@ -26,12 +26,12 @@ _ONLINE_RETAIL_MODULE = 'cdc_eval.kaggle_online_retail_ii_uci'
 class CSVFilesReaderTest(unittest.TestCase):
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.pd.read_csv')
-    def test_read_transactions_should_read_csv(self, mock_read_csv):
+    def test_read_transactions_reads_csv(self, mock_read_csv):
         online_retail.CSVFilesReader.read_transactions('test.csv')
         mock_read_csv.assert_called_once_with('test.csv')
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.pd.read_csv')
-    def test_read_transactions_should_return_data_frame_on_success(self, mock_read_csv):
+    def test_read_transactions_returns_data_frame_on_success(self, mock_read_csv):
         data_frame = pd.DataFrame()
         mock_read_csv.return_value = data_frame
         transactions = online_retail.CSVFilesReader.read_transactions('test.csv')
@@ -45,14 +45,14 @@ class TransactionsDBManagerTest(unittest.TestCase):
         self._db_manager = online_retail.TransactionsDBManager(
             db_conn_string='test-db-conn')
 
-    def test_constructor_should_set_instance_attributes(self):
+    def test_constructor_sets_instance_attributes(self):
         attrs = self._db_manager.__dict__
         self.assertEqual('test-db-conn', attrs['_db_conn_string'])
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.delete')
     @mock.patch(f'{_DB_MANAGER_CLASS}.get_existing_table')
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.create_engine')
-    def test_delete_invoices_should_delete_by_unique_invoice_numbers(
+    def test_delete_invoices_deletes_by_unique_invoice_numbers(
             self, mock_create_engine, mock_get_existing_table, mock_delete):
 
         transactions = pd.DataFrame({
@@ -75,7 +75,7 @@ class TransactionsDBManagerTest(unittest.TestCase):
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.pd.io.sql.to_sql')
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.create_engine')
-    def test_insert_invoices_should_insert_item_batches_grouped_by_invoice(
+    def test_insert_invoices_inserts_item_batches_grouped_by_invoice(
             self, mock_create_engine, mock_to_sql):
 
         transactions = pd.DataFrame({
@@ -95,7 +95,7 @@ class TransactionsDBManagerTest(unittest.TestCase):
         self.assertEqual(mock_to_sql.call_count, 4)  # One call for each invoice
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.MetaData')
-    def test_get_existing_table_should_return_table_if_exists(self, mock_metadata):
+    def test_get_existing_table_returns_table_if_exists(self, mock_metadata):
         mock_conn = mock.MagicMock()
         tables = {'transactions': sqlalchemy.Table()}
         metadata = mock_metadata.return_value
@@ -107,7 +107,7 @@ class TransactionsDBManagerTest(unittest.TestCase):
         metadata.reflect.assert_called_once_with(bind=mock_conn)
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.sqlalchemy.MetaData')
-    def test_get_existing_table_should_return_none_if_not_exists(self, mock_metadata):
+    def test_get_existing_table_returns_none_if_not_exists(self, mock_metadata):
         mock_conn = mock.MagicMock()
         tables = {'transactions': sqlalchemy.Table()}
         metadata = mock_metadata.return_value
@@ -123,7 +123,7 @@ class PandasHelperTest(unittest.TestCase):
     _PANDAS_HELPER_CLASS = f'{_ONLINE_RETAIL_MODULE}.PandasHelper'
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.pd.core.series.Series.unique')
-    def test_get_unique_values_should_return_dataframe_with_unique_values_for_column(
+    def test_get_unique_values_returns_dataframe_with_unique_values_for_column(
             self, mock_unique):
 
         column = 'Invoice'
@@ -148,7 +148,7 @@ class PandasHelperTest(unittest.TestCase):
 
     @mock.patch(f'{_PANDAS_HELPER_CLASS}.select_random_items')
     @mock.patch(f'{_PANDAS_HELPER_CLASS}.get_unique_values')
-    def test_select_random_subsets_should_return_dataframe_of_specified_size(
+    def test_select_random_subsets_returns_dataframe_of_specified_size(
             self, mock_get_unique_values, mock_select_random_items):
 
         id_column = 'Invoice'
@@ -186,9 +186,7 @@ class PandasHelperTest(unittest.TestCase):
         mock_select_random_items.asset_called_once_with(unique_values, 2)
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.pd.DataFrame.sample')
-    def test_select_random_items_should_return_dataframe_of_specified_size(
-            self, mock_sample):
-
+    def test_select_random_items_returns_dataframe_of_specified_size(self, mock_sample):
         df = pd.DataFrame({'Invoice': [489434, 489435, 489436, 489437]})
         df_sample_return = pd.DataFrame({'Invoice': [489435, 489437]})
         mock_sample.return_value = df_sample_return
@@ -206,7 +204,7 @@ class RunnerTest(unittest.TestCase):
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.TransactionsDBManager')
     @mock.patch(f'{_PANDAS_HELPER_CLASS}.select_random_subsets')
     @mock.patch(f'{_CSV_READER_CLASS}.read_transactions')
-    def test_run_should_read_all_transactions_from_file_and_insert_into_db(
+    def test_run_reads_all_transactions_from_file_and_insert_into_db(
             self, mock_read_transactions, mock_select_random_subsets, mock_db_manager):
 
         mock_conn = mock.MagicMock()
@@ -225,7 +223,7 @@ class RunnerTest(unittest.TestCase):
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.TransactionsDBManager', mock.MagicMock())
     @mock.patch(f'{_PANDAS_HELPER_CLASS}.select_random_subsets')
     @mock.patch(f'{_CSV_READER_CLASS}.read_transactions')
-    def test_run_should_optionally_read_n_random_transactions_from_file(
+    def test_run_optionally_reads_n_random_transactions_from_file(
             self, mock_read_transactions, mock_select_random_subsets):
 
         mock_conn = mock.MagicMock()
@@ -242,8 +240,7 @@ class RunnerTest(unittest.TestCase):
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.TransactionsDBManager')
     @mock.patch(f'{_CSV_READER_CLASS}.read_transactions', lambda *args: None)
-    def test_run_should_insert_into_db_by_default(self, mock_db_manager):
-
+    def test_run_inserts_into_db_by_default(self, mock_db_manager):
         online_retail.Runner.run('test.csv', 0, mock.MagicMock(), 0, '')
 
         mock_db_manager.return_value.delete_invoices.assert_not_called()
@@ -251,8 +248,7 @@ class RunnerTest(unittest.TestCase):
 
     @mock.patch(f'{_ONLINE_RETAIL_MODULE}.TransactionsDBManager')
     @mock.patch(f'{_CSV_READER_CLASS}.read_transactions', lambda *args: None)
-    def test_run_should_delete_from_db_mode_is_delete(self, mock_db_manager):
-
+    def test_run_deletes_from_db_mode_is_delete(self, mock_db_manager):
         online_retail.Runner.run('test.csv', 0, mock.MagicMock(), 0, 'delete')
 
         mock_db_manager.return_value.delete_invoices.assert_called_once()
