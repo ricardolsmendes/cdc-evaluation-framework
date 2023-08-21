@@ -1,4 +1,4 @@
-# This workflow will install dependencies, run tests and lint with Python 3.8.
+# This workflow will install dependencies, run tests and style checks with Python 3.8.
 
 name: continuous integration
 
@@ -16,6 +16,9 @@ jobs:
 
       - name: Set up Python 3.8
         uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+          cache: "pip" # Caches pip dependencies.
 
       - name: Install dependencies
         run: |
